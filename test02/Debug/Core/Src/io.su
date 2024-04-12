@@ -1,0 +1,6 @@
+../Core/Src/io.c:13:5:__io_putchar	16	static
+../Core/Src/io.c:19:6:HAL_IncTick	8	static
+../Core/Src/io.c:33:6:io_exti_init	16	static
+../Core/Src/io.c:45:6:io_exti_regcbf	16	static
+../Core/Src/io.c:52:6:HAL_GPIO_EXTI_Callback	24	static
+../Core/Src/io.c:60:13:io_exti_dummy	16	static

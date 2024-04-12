@@ -147,7 +147,7 @@ void app(void)
     tick_prev = tick_curr = HAL_GetTick();
 
     // 무한 루프
-    while (1) {
+    while (1) { // 폴링 방식 ISR
         // 현재 시간 측정
         tick_curr = HAL_GetTick();
     	if (tick_curr - tick_prev >= 1){

@@ -1,0 +1,4 @@
+../Core/Src/adc.c:18:6:adc_regcbf	1
+../Core/Src/adc.c:23:6:adc_thread	2
+../Core/Src/adc.c:37:13:adc_dummy	1
+../Core/Src/adc.c:41:6:adc_init	1

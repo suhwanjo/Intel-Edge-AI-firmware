@@ -1,0 +1,4 @@
+../Core/Src/polling.c:25:6:polling_init	1
+../Core/Src/polling.c:31:6:polling_thread	3
+../Core/Src/polling.c:43:13:adc_callback	1
+../Core/Src/polling.c:53:6:polling_update	3
