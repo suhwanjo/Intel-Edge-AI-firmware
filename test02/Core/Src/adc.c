@@ -1,19 +1,23 @@
 /*
  * adc.c
  *
- *  Created on: Apr 11, 2024
- *      Author: IOT
+ *  Created on: Apr 9, 2024
+ *      Author: iot00
  */
 
 #include <stdio.h>
 #include "adc.h"
 
-static void adc_dummy(void *); // 경고 없애기 위해
+static void adc_dummy(void *);
 
 static ADC_T gAdcObjs[] = {
-		{.cbf = adc_dummy},
-		{.cbf = NULL	 }
+	{ .cbf = adc_dummy 	},
+	{ .cbf = NULL			}
 };
+
+void adc_init(void)
+{
+}
 
 void adc_regcbf(uint16_t idx, ADC_CBF cbf)
 {
@@ -33,11 +37,11 @@ void adc_thread(void *arg)
 	}
 }
 
-// 빈 콜백 함수
+//--------------
+// adc_hw()
+
 static void adc_dummy(void *)
 {
-    return;
-}
-void adc_init(void)
-{
+	printf("I'm ADC dummy\r\n");
+	return;
 }

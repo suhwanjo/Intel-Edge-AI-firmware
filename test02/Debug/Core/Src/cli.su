@@ -1,0 +1,9 @@
+../Core/Src/cli.c:42:12:cli_duty	24	static
+../Core/Src/cli.c:59:12:cli_dump	48	static
+../Core/Src/cli.c:100:12:cli_mode	24	static
+../Core/Src/cli.c:113:12:cli_led	32	static
+../Core/Src/cli.c:132:12:cli_echo	16	static
+../Core/Src/cli.c:143:12:cli_help	24	static
+../Core/Src/cli.c:154:6:cli_init	8	static
+../Core/Src/cli.c:159:6:cli_thread	16	static
+../Core/Src/cli.c:166:13:cli_parser	72	static

@@ -2,12 +2,12 @@
  * button.c
  *
  *  Created on: Apr 11, 2024
- *      Author: IOT
+ *      Author: iot00
  */
+#include <stdbool.h>
 #include <stdio.h>
 #include "io.h"
 #include "button.h"
-#include <stdbool.h>
 
 #define D_USER_BTN_EXTI_NO		13
 
@@ -45,4 +45,3 @@ static void button_callback_13(uint8_t rf, void *arg)
 		flag = true;
 	}
 }
-

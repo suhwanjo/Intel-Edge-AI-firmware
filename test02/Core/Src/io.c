@@ -2,17 +2,18 @@
  * io.c
  *
  *  Created on: Apr 11, 2024
- *      Author: IOT
+ *      Author: iot00
  */
-#include "io.h"
+
 #include <stdbool.h>
 #include "polling.h"
+#include "io.h"
 
 extern UART_HandleTypeDef huart3;
 
 int __io_putchar(int ch)
 {
-	HAL_UART_Transmit(&huart3, (uint8_t *)&ch, 1, 0xffff); // 정의 찾아서 채워넣기
+	HAL_UART_Transmit(&huart3, (uint8_t *)&ch, 1, 0xffff);
 	return ch;
 }
 
@@ -62,3 +63,4 @@ static void io_exti_dummy(uint8_t rf, void *arg)
 	(void)rf;
 	(void)arg;
 }
+

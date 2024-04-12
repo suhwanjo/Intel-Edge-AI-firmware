@@ -2,23 +2,24 @@
  * uart.h
  *
  *  Created on: Apr 11, 2024
- *      Author: IOT
+ *      Author: iot00
  */
 
-#ifndef INC_UART_H_
-#define INC_UART_H_
+#ifndef SRC_UART_H_
+#define SRC_UART_H_
 
 #include "main.h"
 
 #ifdef __cplusplus
-extern "C"{
+extern "C" {
 #endif
 
 void uart_init(void);
-void uart_thread(void *arg);
+void uart_regcbf(void (*cbf)(void *));
+void uart_thread(void *);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* INC_UART_H_ */
+#endif /* SRC_UART_H_ */

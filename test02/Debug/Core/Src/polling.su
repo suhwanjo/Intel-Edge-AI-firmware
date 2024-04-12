@@ -1,4 +1,5 @@
-../Core/Src/polling.c:25:6:polling_init	8	static
-../Core/Src/polling.c:31:6:polling_thread	16	static
-../Core/Src/polling.c:43:13:adc_callback	16	static
-../Core/Src/polling.c:53:6:polling_update	16	static
+../Core/Src/polling.c:27:6:polling_init	8	static
+../Core/Src/polling.c:33:6:polling_thread	16	static
+../Core/Src/polling.c:45:13:adc_callback	16	static
+../Core/Src/polling.c:50:13:adc_callback_2	16	static
+../Core/Src/polling.c:60:6:polling_update	16	static

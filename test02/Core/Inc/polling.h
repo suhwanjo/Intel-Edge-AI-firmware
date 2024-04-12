@@ -1,8 +1,8 @@
 /*
- * polling.h
+ * pooling_thread.h
  *
  *  Created on: Apr 11, 2024
- *      Author: IOT
+ *      Author: iot00
  */
 
 #ifndef INC_POLLING_H_
