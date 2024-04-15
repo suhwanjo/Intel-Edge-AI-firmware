@@ -1,3 +1,3 @@
 ../Core/Src/timer.c:14:6:tim_init	8	static
 ../Core/Src/timer.c:20:6:tim_thread	16	static
-../Core/Src/timer.c:25:6:tim_duty_set	16	static
+../Core/Src/timer.c:24:6:tim_duty_set	16	static

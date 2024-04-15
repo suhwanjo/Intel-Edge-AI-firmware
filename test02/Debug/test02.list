@@ -3967,7 +3967,6 @@ void tim_thread(void *arg)
  80019de:	b083      	sub	sp, #12
  80019e0:	af00      	add	r7, sp, #0
  80019e2:	6078      	str	r0, [r7, #4]
-	//tim_duty_set((uint16_t)300);
 }
  80019e4:	bf00      	nop
  80019e6:	370c      	adds	r7, #12
