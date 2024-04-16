@@ -38,16 +38,32 @@ static int cli_help(int argc, char *argv[]);
 static int cli_mode(int argc, char *argv[]);
 static int cli_dump(int argc, char *argv[]);
 static int cli_duty(int argc, char *argv[]);
+static int cli_btn_uart(int argc, char *argv[]);
 
 const CMD_LIST_T gCmdListObjs[] = {
-	{ "duty",		2,		cli_duty,		"led 1 pwm duty\r\n duty [duty:0~999]"	},
-	{ "dump",	3,		cli_dump,	"memory dump\r\n dump [address:hex] [length:max:10 lines]"	},
-	{ "mode",	2,		cli_mode,	"change application mode\r\n mode [0/1]"	},
-	{ "led",		3,		cli_led,		"led [1/2/3] [on/off]"	},
-	{ "echo",		2,		cli_echo,		"echo [echo data]"	},
-	{ "help", 		1, 		cli_help, 		"help" 					},
-	{ NULL,		0,		NULL,			NULL						}
+	{ "btn",		2,		cli_btn_uart,		"button(uart)\r\n btn ['a'~'z']"							},
+	{ "duty",		2,		cli_duty,			"led 1 pwm duty\r\n duty [duty:0~999]"						},
+	{ "dump",		3,		cli_dump,			"memory dump\r\n dump [address:hex] [length:max:10 lines]"	},
+	{ "mode",		2,		cli_mode,			"change application mode\r\n mode [0/1]"					},
+	{ "led",		3,		cli_led,			"led [1/2/3] [on/off]"										},
+	{ "echo",		2,		cli_echo,			"echo [echo data]"											},
+	{ "help", 		1, 		cli_help, 			"help" 														},
+	{ NULL,			0,		NULL,				NULL														}
 };
+
+extern UART_HandleTypeDef huart2;
+static int cli_btn_uart(int argc, char *argv[])
+{
+	if (argc < 2) {
+		printf("Err : Arg No\r\n");
+		return -1;
+	}
+	HAL_UART_Transmit(&huart2, (uint8_t *)&argv[1][0], 1, 0xffff);
+	printf("cli_btn:%c \r\n", argv[1][0]);
+
+	return 0;
+}
+
 static int cli_duty(int argc, char *argv[])
 {
 	uint16_t duty;
@@ -169,7 +185,7 @@ void cli_thread(void *arg)
 
 	printf("CLI Thread Started...\r\n");
 
-	uart_regcbf(cli_event_set);
+	uart_regcbf(E_UART_1, cli_event_set);
 
 	while (1) {
 		flags = osEventFlagsWait(cli_evt_id, 0xffff, osFlagsWaitAny, osWaitForever);
