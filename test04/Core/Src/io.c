@@ -10,7 +10,7 @@
 
 extern UART_HandleTypeDef huart3;
 
-//int __io_putchar(int ch)
+//int __io_putchar(int ch) // printf와 같은 레이어
 //{
 //	HAL_UART_Transmit(&huart3, (uint8_t *)&ch, 1, 0xffff);
 //	return ch;

@@ -16,6 +16,7 @@ extern "C" {
 
 void cli_init(void);
 void cli_thread(void *);
+void cli_msg_put(void *arg);
 
 #ifdef __cplusplus
 }

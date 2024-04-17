@@ -31,8 +31,8 @@ extern "C" {
 
 void uart_init(void);
 bool uart_regcbf(uint8_t idx, UART_CBF cbf);
-void uart_thread(void *);
-
+//void uart_thread(void *);
+bool slip_encode(const uint8_t *pRaw, uint16_t rawLen, uint8_t *pEncode, uint16_t *pEncodeLen);
 #ifdef __cplusplus
 }
 #endif

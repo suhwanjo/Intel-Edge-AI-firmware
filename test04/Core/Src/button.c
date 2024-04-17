@@ -26,7 +26,7 @@ void button_init(void)
 	}
 
 	io_exti_regcbf(D_BTN_BLUE_NO, io_exti_btn_blue_callback);
-	uart_regcbf(E_UART_0, uart_btn_callback);
+	//uart_regcbf(E_UART_0, uart_btn_callback);
 }
 
 bool button_regcbf(uint16_t idx, BUTTON_CBF cbf)
@@ -44,11 +44,12 @@ void button_proc_blue(void *arg)
 	}
 }
 
-void button_proc_uart(void *arg)
-{
-	BUTTON_T *p = &gBtnObjs[E_BTN_UART];
-	printf("%c:%d\r\n", p->no, p->no);
-}
+//void button_proc_uart(void *arg)
+//{
+//	BUTTON_T *p = &gBtnObjs[E_BTN_UART];
+//	printf("%c:%d\r\n", p->no, p->no);
+//}
+
 
 static void io_exti_btn_blue_callback(uint8_t rf, void *arg)
 {
@@ -64,13 +65,14 @@ static void io_exti_btn_blue_callback(uint8_t rf, void *arg)
 	}
 }
 
-static void uart_btn_callback(void *arg) // 동작
-{
-	BUF_T *pBuf = (BUF_T *)arg;
-	BUTTON_T *p = &gBtnObjs[E_BTN_UART];
+//static void uart_btn_callback(void *arg)
+//{
+//	BUF_T *pBuf = (BUF_T *)arg;
+//	BUTTON_T *p = &gBtnObjs[E_BTN_UART];
+//
+//	p->no = (uint16_t)pBuf->buf[0];
+//	if (p->cbf != NULL) p->cbf((void *)p);
+//
+//}
 
-	p->no = (uint16_t)pBuf->buf[0];
-	if (p->cbf != NULL) p->cbf((void *)p);
-
-}
 

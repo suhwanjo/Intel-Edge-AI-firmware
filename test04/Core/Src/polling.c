@@ -21,7 +21,7 @@ static const osThreadAttr_t polling_thread_attr = {
 
 void polling_thread_init(void);
 static void btn_blue_callback(void *arg);
-static void btn_uart_callback(void *arg);
+//static void btn_uart_callback(void *arg);
 
 //#define D_BTN_BLUE 	0
 //static BUTTON_T gBtnBlue;
@@ -35,7 +35,7 @@ static void polling_thread(void *arg)
 
 	button_init();
 	button_regcbf(E_BTN_BLUE, btn_blue_callback);
-	button_regcbf(E_BTN_UART, btn_uart_callback);
+	//button_regcbf(E_BTN_UART, btn_uart_callback);
 
 	while (1) {
 		flags = osEventFlagsWait(polling_evt_id, 0xffff, osFlagsWaitAny, osWaitForever);
@@ -55,9 +55,9 @@ static void polling_thread(void *arg)
 			printf("%s[0x0004][%d]\r\n", __func__, __LINE__);
 		}
 
-		if (flags & 0x0008) {
-			printf("%s[0x0008][%d]\r\n", __func__, __LINE__);
-			button_proc_uart(NULL);
+		//if (flags & 0x0008) {
+		//	printf("%s[0x0008][%d]\r\n", __func__, __LINE__);
+		//	button_proc_uart(NULL);
 		}
 	}
 }
@@ -90,9 +90,8 @@ static void btn_blue_callback(void *arg)
 	osEventFlagsSet(polling_evt_id, 0x0001); // 스레드 모드로 전환
 }
 
-static void btn_uart_callback(void *arg)
-{
-	osEventFlagsSet(polling_evt_id, 0x0008); // 1-2-4-8
-
-}
+//static void btn_uart_callback(void *arg)
+//{
+//	osEventFlagsSet(polling_evt_id, 0x0008); // 1-2-4-8
+//}
 
