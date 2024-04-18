@@ -16,7 +16,7 @@
 static BUTTON_T gBtnObjs[D_BUTTON_MAX];
 
 static void io_exti_btn_blue_callback(uint8_t rf, void *arg);
-static void uart_btn_callback(void *arg);
+//static void uart_btn_callback(void *arg);
 
 void button_init(void)
 {

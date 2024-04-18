@@ -24,6 +24,8 @@
 #include "cmd.h"
 #include "mem.h"
 #include "cli.h"
+#include "i2c_HD44780.h" // 추가
+#include "softtimer.h"
 
 static osThreadId_t cmd_thread_hnd;	// 쓰레드 핸들
 static osMessageQueueId_t cmd_msg_id;  //메시지큐 핸들
@@ -36,6 +38,40 @@ static const osThreadAttr_t cmd_thread_attr = {
 static void cmd_msg_put_0(void *arg); // 추가
 static void cmd_msg_put(void *arg);
 
+void lcd_test(void)
+{
+	lcd_init();   // initialize lcd
+	lcd_disp_on();
+	lcd_clear_display();
+	lcd_home();
+	//lcd_printf("hello");
+	//lcd_locate(2,0);
+	//lcd_printf("World");
+}
+
+void softtimer_callback(void)
+{
+	static uint8_t count = 0;
+	printf("cnt = %d\r\n", count++);
+	static uint8_t state =0;
+
+	lcd_locate(2,10);
+	switch(state){
+		case 0:{
+			lcd_printchar('.'); state++;
+		}break;
+		case 1:{
+			lcd_printchar('o'); state++;
+		}break;
+		case 2:{
+			lcd_printchar('O'); state++;
+		}break;
+		case 3:{
+			lcd_printchar('@'); state = 0;
+		}break;
+	}
+}
+
 void cmd_thread(void *arg)
 {
 	(void)arg;
@@ -44,6 +80,12 @@ void cmd_thread(void *arg)
 
 	uart_regcbf(E_UART_0, cmd_msg_put_0);
 	uart_regcbf(E_UART_1, cmd_msg_put);
+
+	lcd_test();
+
+	//softtimer_init();
+	//softtimer_regcbf(softtimer_callback);
+	//softtimer_start(500);
 
 	while (1) {
 		sts = osMessageQueueGet(cmd_msg_id, &rxMsg, NULL, osWaitForever);
@@ -71,7 +113,7 @@ void cmd_thread(void *arg)
 					printf("E_MSG_CMD_RX\r\n");
 
 					switch (pRxPkt->cmd) {
-						case E_CMD_LED : {
+						case E_CMD_LED : { // 00 00
 							printf("LED command\r\n");
 							printf("cmd=%04x, len=%d ", pRxPkt->cmd, pRxPkt->len);
 							for (int i=0; i<pRxPkt->len; i++) {
@@ -97,19 +139,43 @@ void cmd_thread(void *arg)
 							mem_free(pMem); //					}break;
 						} break;
 
-					case E_CMD_CLI:{ // PKT_T 구조체 사용한 withrobot 디코딩
-						printf("CLI Command\r\n");
-						pRxPkt->ctx[pRxPkt->len] = 0; // '\0'
-						cli_msg_put((void *)pMem);
+						case E_CMD_CLI:{ // 01 00
+							// PKT_T 구조체 사용한 withrobot 디코딩
+							printf("CLI Command\r\n");
+							pRxPkt->ctx[pRxPkt->len] = 0; // 끝에 '\0'(널 문자) 달아서 cli_msg_put으로
+							cli_msg_put((void *)pMem);
 						} break;
-				}
+
+						// 방법 1
+						case E_CMD_LCD: { // LCD 출력 명령 처리
+							printf("LCD Command\r\n");
+							pRxPkt->ctx[pRxPkt->len] = 0; // '\0'
+							cli_msg_put((void *)pMem);
+						} break;
+// 방법 2
+//#define print_lcd(r, c)  \
+//do { \
+//	lcd_locate(r, c); \
+//	pRxPkt->ctx[pRxPkt->len] = 0; \
+//	char *str = (char *)pRxPkt->ctx; \
+//	lcd_print_string(str); \
+//} while(0)
+//						case E_CMD_LCD_LINE_1: {
+//							print_lcd(1, 1);
+//							mem_free(pMem);
+//						} break;
+//
+//						case E_CMD_LCD_LINE_2: {
+//							print_lcd(2, 1);
+//							mem_free(pMem);
+//						} break;
+					}
 //				printf("cmd=%04x, len=%d",pRxPkt->cmd,pRxPkt->len);
 //				for(int i=0; i < pRxPkt->len; i++){
 //					printf("%02x ",pRxPkt->ctx[i]);
 //				}
 //				printf("\r\n");
 //				mem_free(pMem); //pMem으로 바꾸면서 free하면 안됨
-
 			}break;
 			}
 		}

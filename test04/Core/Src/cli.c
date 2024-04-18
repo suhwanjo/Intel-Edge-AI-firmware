@@ -17,7 +17,7 @@
 #include "tim.h"
 #include "led.h"
 #include "cli.h"
-
+#include "i2c_HD44780.h"
 
 typedef struct {
 	char *cmd;	// 명령어
@@ -42,6 +42,7 @@ static int cli_mode(int argc, char *argv[]);
 static int cli_dump(int argc, char *argv[]);
 static int cli_duty(int argc, char *argv[]);
 static int cli_btn_uart(int argc, char *argv[]);
+static int cli_lcd(int argc, char *argv[]);
 
 const CMD_LIST_T gCmdListObjs[] = {
 	{ "btn",		2,		cli_btn_uart,		"button(uart)\r\n btn ['a'~'Z']"	},
@@ -51,8 +52,33 @@ const CMD_LIST_T gCmdListObjs[] = {
 	{ "led",		3,		cli_led,			"led [1/2/3] [on/off]"	},
 	{ "echo",		2,		cli_echo,			"echo [echo data]"	},
 	{ "help", 		1, 		cli_help, 			"help" 					},
+    { "lcd",        3,      cli_lcd,           "lcd [line][message]"   }, // 새로운 LCD 명령 추가
 	{ NULL,		0,		NULL,				NULL						}
 };
+
+static int cli_lcd(int argc, char *argv[])
+{
+	if (argc < 3) {
+		printf("Err : Arg No\r\n");
+		return -1;
+	}
+	int line = atoi(argv[1]);
+	if (line < 1 || line > 2) {
+		printf("Err: Invalid line number\r\n");
+		return -1;
+	}
+
+	if (strcmp(argv[2], "clear") == 0) {
+		lcd_clear_display();
+		printf("LCD line %d cleared\r\n", line);
+	}
+	else {
+		lcd_locate(line,0);
+		printf("LCD line %d: %s\r\n", line, argv[2]);
+		lcd_printf(argv[2]);
+	}
+	return 0;
+}
 
 //extern UART_HandleTypeDef huart2;
 static int cli_btn_uart(int argc, char *argv[])
@@ -195,7 +221,7 @@ void cli_thread(void *arg)
 	osMessageQueuePut(cli_msg_id, &txMsg, 0, osWaitForever);
 
 	while (1) {
-		sts = osMessageQueueGet(cli_msg_id, &rxMsg, NULL, osWaitForever);
+		sts = osMessageQueueGet(cli_msg_id, &rxMsg, NULL, osWaitForever); // 받기
 
 		if (sts == osOK) {
 			switch (rxMsg.id) {
@@ -218,7 +244,7 @@ void cli_thread(void *arg)
 					MEM_T *pMem = (MEM_T *)rxMsg.body.vPtr;
 					PKT_T *pRxPkt = (PKT_T *)pMem->buf;
 
-					cli_parser(pRxPkt->ctx);
+					cli_parser(pRxPkt->ctx); // cli_parser로
 					mem_free(pMem);	
 				} break;
 			}
@@ -257,10 +283,8 @@ void cli_init(void)
 // ISR
 void cli_msg_put(void *arg)
 {
-	Q_PUT(cli_msg_id, E_MSG_CLI, arg, osWaitForever);
+	Q_PUT(cli_msg_id, E_MSG_CLI, arg, osWaitForever); // 보내기
 }
-
-
 
 #define D_DELIMITER		" ,\r\n"
 
@@ -288,8 +312,8 @@ static void cli_parser(uint8_t *arg)
 //	}
 
 	for (int i=0; gCmdListObjs[i].cmd != NULL; i++) {
-		if (strcmp(gCmdListObjs[i].cmd, argv[0]) == 0) {
-			gCmdListObjs[i].cbf(argc, argv);
+		if (strcmp(gCmdListObjs[i].cmd, argv[0]) == 0) { // 입력한 기능과 같으면
+			gCmdListObjs[i].cbf(argc, argv); // 그 기능의 콜백 함수 호출
 			return;
 		}
 	}

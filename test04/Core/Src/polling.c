@@ -58,7 +58,7 @@ static void polling_thread(void *arg)
 		//if (flags & 0x0008) {
 		//	printf("%s[0x0008][%d]\r\n", __func__, __LINE__);
 		//	button_proc_uart(NULL);
-		}
+		//}
 	}
 }
 

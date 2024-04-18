@@ -11,9 +11,10 @@
 #include "main.h"
 
 enum{
-	E_CMD_LED,
-	E_CMD_CLI,
-	E_CMD_MAX
+	E_CMD_LED, 	// 0
+	E_CMD_CLI, 	// 1
+	E_CMD_LCD,
+	E_CMD_MAX 	// 2
 };
 
 #ifdef __cplusplus

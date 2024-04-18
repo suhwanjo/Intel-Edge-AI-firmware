@@ -32,7 +32,6 @@ void uart_init(void)
 	HAL_UART_Receive_IT(&huart3, (uint8_t *)&rxdata[E_UART_1], 1);
 }
 // 직접 가르켜 주려면 전부 extern을 붙여야 함
-// 등록 함수에
 bool uart_regcbf(uint8_t idx, UART_CBF cbf)
 {
 	if(idx > D_BUF_OBJ_MAX) return false;
