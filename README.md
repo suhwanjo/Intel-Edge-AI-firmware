@@ -1,5 +1,5 @@
 # Intel-Edge-AI-SW-Academy
-- 펌웨어 프로그래밍
+펌웨어 프로그래밍
 
 수업 정리 Notion 링크
 
